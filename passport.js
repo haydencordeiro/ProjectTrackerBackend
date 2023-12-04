@@ -8,6 +8,7 @@ require('dotenv').config();
 const GOOGLE_CLIENT_ID=process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET=process.env.GOOGLE_CLIENT_SECRET
 
+const UserController=require('./controllers/userController');
 passport.use(
   new GoogleStrategy(
     {
@@ -16,7 +17,14 @@ passport.use(
       callbackURL: "/auth/google/callback",
     },
     function (accessToken, refreshToken, profile, done) {
-      done(null, profile);
+      // return UserController.createNewSnack;
+      // User.findOrCreate({ googleId: profile.id }, function (err, user) {
+        // userObject = {userid:profile.id,username:profile.username};
+        
+        return done(null,profile);
+      // });
+      
+
     }
   )
 );
