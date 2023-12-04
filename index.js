@@ -5,6 +5,8 @@ const passportSetup = require("./passport");
 const passport = require("passport");
 const authRoute = require("./routes/auth");
 const app = express();
+require('./db.js');
+const UserController=require("./controllers/userController");
 
 app.use(
   cookieSession({ name: "session", keys: ["asdukfhakhdahkf"], maxAge: 24 * 60 * 60 * 100 })
@@ -12,6 +14,7 @@ app.use(
 
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.json())
 
 app.use(
   cors({
@@ -26,3 +29,6 @@ app.use("/auth", authRoute);
 app.listen("5000", () => {
   console.log("Server is running!");
 });
+
+app.post('/adduser',(req,res) => UserController.createNewUser(req,res));
+
