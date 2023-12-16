@@ -4,11 +4,15 @@ const FacebookStrategy = require("passport-facebook").Strategy;
 const passport = require("passport");
 require('dotenv').config();
 
-
+const UserModel=require('./schemas/user.schema');
 const GOOGLE_CLIENT_ID=process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET=process.env.GOOGLE_CLIENT_SECRET
 
 const UserController=require('./controllers/userController');
+// ----
+let mongoose =require('mongoose');
+const myDB = mongoose.connection.useDb('projecttracker');
+// -------
 passport.use(
   new GoogleStrategy(
     {
@@ -16,15 +20,27 @@ passport.use(
       clientSecret: GOOGLE_CLIENT_SECRET,
       callbackURL: "/auth/google/callback",
     },
-    function (accessToken, refreshToken, profile, done) {
-      // return UserController.createNewSnack;
-      // User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        // userObject = {userid:profile.id,username:profile.username};
-        
-        return done(null,profile);
-      // });
-      
+    async function (accessToken, refreshToken, profile, done) {
+      // -------------
+    const usercollection = myDB.collection("usermodels");
 
+    // Check if the document exists
+    const existingObject = await usercollection.findOne({userid:profile.id});
+      console.log("12344");
+      console.log(profile.id);
+      console.log(existingObject);
+    
+    if (existingObject) {
+      console.log('OBJECT ALREADY EXISTS:', profile.id);
+    } else {
+      const user=new UserModel({
+        userid: profile.id,
+        username: profile.displayName
+    });
+    user.save();
+    console.log("NEW USERLOGIN DONE",user);
+    }
+    return done(null,profile);
     }
   )
 );
