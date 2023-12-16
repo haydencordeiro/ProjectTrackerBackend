@@ -11,6 +11,7 @@ router.get("/login/success", (req, res) => {
       user: req.user,
       //   cookies: req.cookies
     });
+
   }
 });
 
@@ -35,5 +36,10 @@ router.get(
     failureRedirect: "/login/failed",
   })
 );
+
+router.post('/adduser', (req, res) => {
+  console.log('Got body:', req);
+  res.sendStatus(200);
+});
 
 module.exports = router

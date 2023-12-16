@@ -10,10 +10,12 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "bluebird": "^3.7.2",
         "cookie-session": "^1.4.0",
         "cors": "^2.8.5",
         "dotenv": "^16.3.1",
         "express": "^4.17.1",
+        "mongoose": "^8.0.2",
         "nodemon": "^2.0.14",
         "passport": "^0.5.0",
         "passport-facebook": "^3.0.0",
