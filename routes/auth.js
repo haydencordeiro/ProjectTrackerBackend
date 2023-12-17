@@ -37,7 +37,6 @@ router.get(
 );
 
 router.post('/adduser', (req, res) => {
-  console.log('Got body:', req);
   res.sendStatus(200);
 });
 

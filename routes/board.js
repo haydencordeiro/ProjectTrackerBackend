@@ -82,7 +82,6 @@ router.get("/api/getTasks/:boardId", async (req, res) => {
 
         const foundBoard = user.boards.find(board => board.id === boardId);
         if (foundBoard) {
-            console.log("Found board:", foundBoard);
  
 
         } else {
