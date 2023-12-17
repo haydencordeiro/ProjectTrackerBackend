@@ -42,20 +42,4 @@ router.post('/adduser', (req, res) => {
   res.sendStatus(200);
 });
 
-router.get("/api/user", (req, res) => {
-  if (req.isAuthenticated()) {
-    console.log(req.user)
-    res.status(200).json({
-      userID: req.user.id,
-      userName: req.user.displayName,
-      picture:req.user.photos[0].value
-    });
-  } else {
-    res.status(401).json({
-      success: false,
-      message: "Please log in",
-    });
-  }
-});
-
 module.exports = router

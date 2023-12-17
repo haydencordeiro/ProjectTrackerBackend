@@ -1,23 +1,66 @@
-let mongoose =require('mongoose');
-let Schema= mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
+const { v4: uuidv4 } = require('uuid');
 
+const TaskSchema = new Schema({
+  task: {
+    type: String,
+    required: true,
+  },
+  dueDate: {
+    type: String,
+  },
+  list: {
+    type: String,
+    required: true,
+  },
+  id: {
+    type: String,
+    default: uuidv4, 
+    unique: true,
+    required: true,
+  },
+});
+
+// Board schema
+const BoardSchema = new Schema({
+  id: {
+    type: String,
+    default: uuidv4, 
+    unique: true,
+    required: true,
+  },
+  tasks: [TaskSchema], // Embedding TaskSchema within BoardSchema as an array
+});
+
+// User schema
 const UserSchema = new Schema({
-  
   userid: {
     type: String,
-    unique: true, // Ensure uniqueness
-    required: true, // Make it required
+    unique: true,
+    required: true,
   },
   username: String,
-  boardIds: {
-      type: [Number], // Assuming board ids are numbers, change as needed
-      default: [], // Default to an empty array
-    },
-  });
+  boards: [BoardSchema],
+});
 
+// Pre-save hook to generate random IDs
+BoardSchema.pre('save', function (next) {
+  if (!this.id) {
+    this.id = uuidv4();
+  }
+  next();
+});
+
+TaskSchema.pre('save', function (next) {
+  if (!this.id) {
+    this.id = uuidv4();
+  }
+  next();
+});
+
+// Models
 const myDB = mongoose.connection.useDb('projecttracker');
-const UserModel=myDB.model('UserModel',UserSchema);
+const UserModel = myDB.model('UserModel', UserSchema);
 
-// const SnackModel=mongoose.model('Favorite',SnackSchema);
-// export default SnackModel;
-module.exports=UserModel;
+module.exports = UserModel;

@@ -4,6 +4,7 @@ const cors = require("cors");
 const passportSetup = require("./passport");
 const passport = require("passport");
 const authRoute = require("./routes/auth");
+const boardRoute = require("./routes/board");
 const app = express();
 require('./db.js');
 const UserController=require("./controllers/userController");
@@ -25,6 +26,7 @@ app.use(
 );
 
 app.use("/auth", authRoute);
+app.use("/board", boardRoute);
 
 app.listen("5000", () => {
   console.log("Server is running!");

@@ -32,7 +32,7 @@ passport.use(
       const user=new UserModel({
         userid: profile.id,
         username: profile.displayName,
-        boardIds: []
+        boards: {}
     });
     user.save();
     }
