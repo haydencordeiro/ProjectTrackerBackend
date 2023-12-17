@@ -2,12 +2,16 @@ let mongoose =require('mongoose');
 let Schema= mongoose.Schema;
 
 const UserSchema = new Schema({
-    userid: String,
-    username: String,
-    boardIds: {
+  
+  userid: {
+    type: String,
+    unique: true, // Ensure uniqueness
+    required: true, // Make it required
+  },
+  username: String,
+  boardIds: {
       type: [Number], // Assuming board ids are numbers, change as needed
       default: [], // Default to an empty array
-      unique: true,
     },
   });
 

@@ -23,22 +23,18 @@ passport.use(
     async function (accessToken, refreshToken, profile, done) {
       // -------------
     const usercollection = myDB.collection("usermodels");
-
     // Check if the document exists
     const existingObject = await usercollection.findOne({userid:profile.id});
-      console.log("12344");
-      console.log(profile.id);
-      console.log(existingObject);
     
     if (existingObject) {
       console.log('OBJECT ALREADY EXISTS:', profile.id);
     } else {
       const user=new UserModel({
         userid: profile.id,
-        username: profile.displayName
+        username: profile.displayName,
+        boardIds: []
     });
     user.save();
-    console.log("NEW USERLOGIN DONE",user);
     }
     return done(null,profile);
     }
