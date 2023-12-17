@@ -29,6 +29,7 @@ const BoardSchema = new Schema({
     required: true,
   },
   name:String,
+  boardList: [String],
   tasks: [TaskSchema], // Embedding TaskSchema within BoardSchema as an array
 });
 

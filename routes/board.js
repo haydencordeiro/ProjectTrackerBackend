@@ -22,11 +22,10 @@ router.get("/api/createBoard/:boardname", async (req, res) => {
     if (req.isAuthenticated()) {
         let user = await UserModel.findOne({ userid: req.user.id });
         const boardName = req.params.boardname;
-
-
         user.boards.push({
             name: boardName,
-            tasks:[]
+            tasks:[],
+            boardList:[]
         })
         user.save()
         res.status(200).json({
@@ -44,13 +43,16 @@ router.get("/api/createBoard/:boardname", async (req, res) => {
 router.get("/api/addTask/:boardId/:taskname/:listname", async (req, res) => {
     if (req.isAuthenticated()) {
         const user = await UserModel.findOne({userid: req.user.id})
-        console.log(user,"ASDf",req.user.id)
         const boardId = req.params.boardId;
         const taskName = req.params.taskname;
         const listName = req.params.listname;
 
         const foundBoard = user.boards.find(board => board.id === boardId);
         if (foundBoard) {
+            const listNameInList = foundBoard.boardList.find(name => name == listName)
+            if(!listNameInList){
+                foundBoard.boardList.push(listName)
+            }
             console.log("Found board:", foundBoard);
             const newTask = {
                 task: taskName,
@@ -88,7 +90,7 @@ router.get("/api/getTasks/:boardId", async (req, res) => {
             console.log("Board not found");
         }
         res.status(200).json({
-            tasks: foundBoard.tasks
+            board:foundBoard,
         });
     } else {
         res.status(401).json({
