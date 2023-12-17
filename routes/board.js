@@ -5,7 +5,7 @@ const UserModel=require('../schemas/user.schema.js');
 
 router.get("/api/getBoards", async (req, res) => {
     if (req.isAuthenticated()) {
-        console.log(req.user.id)
+        // console.log(req.user.id)
         const user = await UserModel.findOne({ userid: req.user.id });
         res.status(200).json({
             boards: user.boards.map((data) =>{ return {"id":data.id, "name":data.name}})
