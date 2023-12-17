@@ -28,7 +28,7 @@ router.get("/api/createBoard/:boardname", async (req, res) => {
         })
         user.save()
         res.status(200).json({
-            message: "done"
+            board: user.boards.at(-1)
         });
     } else {
         res.status(401).json({
