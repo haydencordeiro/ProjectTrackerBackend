@@ -19,9 +19,7 @@ passport.use(
     },
     async function (accessToken, refreshToken, profile, done) {
     const existingObject = await UserModel.findOne({userid:profile.id});
-    console.log(existingObject)
     if (existingObject) {
-      console.log('OBJECT ALREADY EXISTS:', profile.id);
     } else {
       const user=new UserModel({
         userid: profile.id,
