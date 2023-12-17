@@ -9,10 +9,7 @@ const GOOGLE_CLIENT_ID=process.env.GOOGLE_CLIENT_ID
 const GOOGLE_CLIENT_SECRET=process.env.GOOGLE_CLIENT_SECRET
 
 const UserController=require('./controllers/userController');
-// ----
-// let mongoose =require('mongoose');
-// const myDB = mongoose.connection.useDb('projecttracker');
-// -------
+
 passport.use(
   new GoogleStrategy(
     {
@@ -21,9 +18,6 @@ passport.use(
       callbackURL: "/auth/google/callback",
     },
     async function (accessToken, refreshToken, profile, done) {
-      // -------------
-    // const usercollection = myDB.collection("usermodels");
-    // Check if the document exists
     const existingObject = await UserModel.findOne({userid:profile.id});
     console.log(existingObject)
     if (existingObject) {

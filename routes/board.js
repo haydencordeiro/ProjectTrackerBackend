@@ -1,10 +1,7 @@
 const router = require("express").Router();
 const passport = require("passport");
 const UserModel=require('../schemas/user.schema.js');
-const getUser = async (req) => {
-    const user = await UserModel.findOne({ userid: req.user.id });
-    return user
-}
+
 
 router.get("/api/getBoards", async (req, res) => {
     if (req.isAuthenticated()) {
@@ -12,31 +9,6 @@ router.get("/api/getBoards", async (req, res) => {
         const user = await UserModel.findOne({ userid: req.user.id });
         res.status(200).json({
             boards: user.boards.map((data) =>{ return {"id":data.id, "name":data.name}})
-        });
-    } else {
-        res.status(401).json({
-            success: false,
-            message: "Please log in",
-        });
-    }
-});
-
-router.get("/api/getTasks/:boardId", async (req, res) => {
-    if (req.isAuthenticated()) {
-        let user = await UserModel.findOne({ userid: req.user.id });
-        const boardId = req.params.boardId;
-
-
-        const foundBoard = user.boards.find(board => board.id === boardId);
-        if (foundBoard) {
-            console.log("Found board:", foundBoard);
- 
-
-        } else {
-            console.log("Board not found");
-        }
-        res.status(200).json({
-            tasks: foundBoard.tasks
         });
     } else {
         res.status(401).json({
@@ -101,5 +73,29 @@ router.get("/api/addTask/:boardId/:taskname/:listname", async (req, res) => {
     }
 });
 
+router.get("/api/getTasks/:boardId", async (req, res) => {
+    if (req.isAuthenticated()) {
+        let user = await UserModel.findOne({ userid: req.user.id });
+        const boardId = req.params.boardId;
+
+
+        const foundBoard = user.boards.find(board => board.id === boardId);
+        if (foundBoard) {
+            console.log("Found board:", foundBoard);
+ 
+
+        } else {
+            console.log("Board not found");
+        }
+        res.status(200).json({
+            tasks: foundBoard.tasks
+        });
+    } else {
+        res.status(401).json({
+            success: false,
+            message: "Please log in",
+        });
+    }
+});
 
 module.exports = router
