@@ -10,8 +10,8 @@ const GOOGLE_CLIENT_SECRET=process.env.GOOGLE_CLIENT_SECRET
 
 const UserController=require('./controllers/userController');
 // ----
-let mongoose =require('mongoose');
-const myDB = mongoose.connection.useDb('projecttracker');
+// let mongoose =require('mongoose');
+// const myDB = mongoose.connection.useDb('projecttracker');
 // -------
 passport.use(
   new GoogleStrategy(
@@ -22,17 +22,17 @@ passport.use(
     },
     async function (accessToken, refreshToken, profile, done) {
       // -------------
-    const usercollection = myDB.collection("usermodels");
+    // const usercollection = myDB.collection("usermodels");
     // Check if the document exists
-    const existingObject = await usercollection.findOne({userid:profile.id});
-    
+    const existingObject = await UserModel.findOne({userid:profile.id});
+    console.log(existingObject)
     if (existingObject) {
       console.log('OBJECT ALREADY EXISTS:', profile.id);
     } else {
       const user=new UserModel({
         userid: profile.id,
         username: profile.displayName,
-        boards: {}
+        boards: []
     });
     user.save();
     }

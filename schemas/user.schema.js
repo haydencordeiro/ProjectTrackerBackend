@@ -17,7 +17,6 @@ const TaskSchema = new Schema({
   id: {
     type: String,
     default: uuidv4, 
-    unique: true,
     required: true,
   },
 });
@@ -27,9 +26,9 @@ const BoardSchema = new Schema({
   id: {
     type: String,
     default: uuidv4, 
-    unique: true,
     required: true,
   },
+  name:String,
   tasks: [TaskSchema], // Embedding TaskSchema within BoardSchema as an array
 });
 
@@ -60,7 +59,6 @@ TaskSchema.pre('save', function (next) {
 });
 
 // Models
-const myDB = mongoose.connection.useDb('projecttracker');
-const UserModel = myDB.model('UserModel', UserSchema);
+const UserModel = mongoose.model('UserModel', UserSchema);
 
 module.exports = UserModel;
