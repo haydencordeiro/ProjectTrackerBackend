@@ -7,7 +7,7 @@ router.get("/api/getBoards", async (req, res) => {
     if (req.isAuthenticated()) {
         const user = await UserModel.findOne({ userid: req.user.id });
         res.status(200).json({
-            boards: user.boards.map((data) =>{ return {"id":data.id, "name":data.name}})
+            boards: user.boards.map((data) =>{ return {"id":data.id, "name":data.name, "boardImageURL":data.boardImageURL}})
         });
     } else {
         res.status(401).json({
@@ -17,6 +17,11 @@ router.get("/api/getBoards", async (req, res) => {
     }
 });
 
+const bgs = [
+    'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=2029&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://images.unsplash.com/photo-1554034483-04fda0d3507b?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+  'https://trello-backgrounds.s3.amazonaws.com/SharedBackground/2048x1194/1ae72d8a416e9a846331da7083f0d4ba/photo-1694250990115-ca7d9d991b24.jpg'
+  ]
 router.get("/api/createBoard/:boardname", async (req, res) => {
     if (req.isAuthenticated()) {
         let user = await UserModel.findOne({ userid: req.user.id });
@@ -24,7 +29,8 @@ router.get("/api/createBoard/:boardname", async (req, res) => {
         user.boards.push({
             name: boardName,
             tasks:[],
-            boardList:[]
+            boardList:[],
+            boardImageURL : bgs[Math.floor(Math.random() * bgs.length)]
         })
         user.save()
         res.status(200).json({
